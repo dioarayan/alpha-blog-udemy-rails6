@@ -1,23 +1,29 @@
 <h1 class="text-center mt-3"><%= @article.title %></h1>
 
 <div class="container">
-<div class="row justify-content-md-center">
-    <div class="col-8 mt-3">
-    <div class="card text-center shadow bg-white rounded">
-        <div class="card-header font-italic">
-        by <%= @article.user.username %>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-sm-10 mt-3">
+        <div class="card text-center shadow bg-white rounded">
+            <div class="card-header font-italic flex-row">
+                by <%= @article.user.username %> 
+                <%= link_to gravatar_for(@article.user), user_path(@article.user) %>
+            </div>
+            <div class="card-body">
+            <div class="card-text text-left"><%= simple_format(@article.description) %></div>
+            <% if logged_in? && (@article.user == current_user || current_user.admin?)%>
+                <%= link_to 'Edit', edit_article_path(@article), class: "btn btn-outline-info" %>            
+                <%= link_to 'Delete', article_path(@article), class: "btn btn-outline-danger", method: :delete, data: { confirm: "Are you sure?"} %>            
+            <% end %>
+            
+            </div>
+            <div class="card-footer text-muted">
+            <small>Created <%= time_ago_in_words(@article.created_at) %> ago,
+            edited <%= time_ago_in_words(@article.updated_at)%> ago </small>
+            </div>
         </div>
-        <div class="card-body">
-        <div class="card-text text-left"><%= simple_format(@article.description) %></div>
-        <%= link_to 'Edit', edit_article_path(@article), class: "btn btn-outline-info" %>            
-        <%= link_to 'Delete', article_path(@article), class: "btn btn-outline-danger", method: :delete, data: { confirm: "Are you sure?"} %>            
-        
+        <div class="my-3 text-center">
+            <%= link_to '[ Back to articles listing ]', articles_path, class: "text-info" %>
         </div>
-        <div class="card-footer text-muted">
-        <small>Created <%= time_ago_in_words(@article.created_at) %> ago,
-        edited <%= time_ago_in_words(@article.updated_at)%> ago </small>
-        </div>
-    </div>
     </div>
 </div>
 </div>
